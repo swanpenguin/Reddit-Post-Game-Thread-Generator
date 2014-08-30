@@ -92,7 +92,7 @@ class EspnBoxScore
     elsif @away_team[:ranked]
       scores.shift
       @scoreboard[:away] = scores.take(scores.size/2)
-      @schoreboard[:home] = scores.drop(scores.size/2)
+      @scoreboard[:home] = scores.drop(scores.size/2)
     elsif @home_team[:ranked]
       @scoreboard[:away] = scores.take(scores.size/2)
       @scoreboard[:home] = scores.drop(scores.size/2)
