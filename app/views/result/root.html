@@ -1,0 +1,27 @@
+<h4>Note the placeholder. The format should match it.</h4>
+<input class="espn_url" type="text" placeholder="http://scores.espn.go.com/ncf/boxscore?gameId=400548402" style="width: 400px"><br> 
+
+<button class="get_results">Generate Reddit Post</button>
+<br><br><div class="copy_notice">Copy and paste what appears below!</div><br>
+<a class="make_reddit_post" style="white-space:pre">
+<br>
+<div class="results_content" style="white-space:pre"></div>
+
+<script>
+$('.get_results').click(function () {
+  data = $('.espn_url').val();
+  url = '/result/generate?url=' + data;
+  $.ajax({
+    url: url,
+    type: 'GET',
+    dataType: 'json',
+    success: function (r) {
+  // $(".make_reddit_post").attr('href',"http://reddit.com/r/CFB/submit?selftext=true&title=" + r.title + "&text="+r.post.replace(/\s/, '%0A')).text("...or you could just click this quick link.");
+      $('.results_content').text(r.post)
+    },
+    error: function (r) {
+      $('.results_content').text("You dun fucked up now, boy. Go on, try again.")
+    }
+  })
+})
+</script>
