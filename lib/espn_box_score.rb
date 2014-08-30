@@ -78,11 +78,30 @@ class EspnBoxScore
     
     # [team, score, score, score, score, tot, team, score, score, score, score, tot]
     scores = @gamehq.xpath("//div[@class='line-score-container']//tr[not(@class='periods')]").children.children.map(&:text)
+        
+    #scores1 -> shift then normal
+    #scores2 -> normals
+    #scores3 -> take both then shift then placed
+    #scores4 -> take, then shift home.
     
-    @scoreboard[:away] = scores.take(scores.size/2) #first el of array is team
-    @scoreboard[:away].shift if @away_team[:ranked]
-    @scoreboard[:home] = scores.drop(scores.size/2) #first el of array is team
-    @scoreboard[:home].shift if @home_team[:ranked]
+    if @away_team[:ranked] && @home_team[:ranked]
+      @scoreboard[:away] = scores.take(scores.size/2)
+      @scoreboard[:away].shift
+      @scoreboard[:home] = scores.drop(scores.size/2)
+      @scoreboard[:home].shift
+    elsif @away_team[:ranked]
+      scores.shift
+      @scoreboard[:away] = scores.take(scores.size/2)
+      @schoreboard[:home] = scores.drop(scores.size/2)
+    elsif @home_team[:ranked]
+      @scoreboard[:away] = scores.take(scores.size/2)
+      @scoreboard[:home] = scores.drop(scores.size/2)
+      @scoreboard[:home].shift
+    else
+      @scoreboard[:away] = scores.take(scores.size/2)
+      @scoreboard[:home] = scores.drop(scores.size/2)
+    end
+      
   end
   
   def make_game_notes
