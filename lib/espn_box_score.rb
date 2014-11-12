@@ -106,11 +106,20 @@ class EspnBoxScore
   
   def make_game_notes
     @game_notes = Hash.new
-    @game_notes[:passing] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[0].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[1].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[2].text
-
-    @game_notes[:rushing] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[3].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[4].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[5].text 
     
-    @game_notes[:receiving] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[6].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[7].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[8].text
+    if @url.include? "nba"
+      debugger
+      @game_notes[:away] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[0..2].text
+      
+      @game_notes[:home] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[3..5].text
+    else
+      debugger
+      @game_notes[:passing] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[0].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[1].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[2].text
+
+      @game_notes[:rushing] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[3].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[4].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[5].text 
+    
+      @game_notes[:receiving] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[6].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[7].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[8].text
+    end
   end
   
   def quarters
@@ -141,6 +150,23 @@ class EspnBoxScore
     result
   end
   
+  def top_performers
+    string = ""
+    if @url.include? "nba"
+      string << "#{game_notes[:away]}"
+      string << "\n\n"
+      string << "#{game_notes[:home]}"
+    else
+      string << "#{game_notes[:passing]}"
+      string << "\n\n"
+      string << "#{game_notes[:rushing]}"
+      string << "\n\n"
+      string << "#{game_notes[:receiving]}"
+    end
+    
+    string
+  end
+  
   def make_post
     @post = "[Box Score provided by ESPN](#{url})
     
@@ -153,17 +179,15 @@ class EspnBoxScore
 
 **Top Performers**
 
-#{game_notes[:passing]}
-
-#{game_notes[:rushing]}
-
-#{game_notes[:receiving]}
+#{top_performers}
 
 **Thoughts**
 
 *please substitute this for 2-4 thoughts you had during this game.*
     
-    
+
+
+created by /u/swanpenguin
 "
   end
   
@@ -186,7 +210,7 @@ class EspnBoxScore
   end
   
   def loser
-    if @away_team[:name] == winner
+    if @away_team == winner
       @home_team
     else
       @away_team
