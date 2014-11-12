@@ -17,7 +17,11 @@ $('.get_results').click(function () {
     dataType: 'json',
     success: function (r) {
   // $(".make_reddit_post").attr('href',"http://reddit.com/r/CFB/submit?selftext=true&title=" + r.title + "&text="+r.post.replace(/\s/, '%0A')).text("...or you could just click this quick link.");
-      $('.results_content').text(r.post)
+      //$('.results_content').text(r.post)
+    
+      $('.results_content').html("")
+      $('.results_content').append("<textarea rows='15' cols='50'></textarea>")
+      $('textarea').val(r.post)
     },
     error: function (r) {
       $('.results_content').text("You dun fucked up now, boy. Go on, try again.")

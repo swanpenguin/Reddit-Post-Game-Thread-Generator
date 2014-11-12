@@ -108,12 +108,10 @@ class EspnBoxScore
     @game_notes = Hash.new
     
     if @url.include? "nba"
-      debugger
       @game_notes[:away] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[0..2].text
       
       @game_notes[:home] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[3..5].text
     else
-      debugger
       @game_notes[:passing] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[0].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[1].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[2].text
 
       @game_notes[:rushing] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[3].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[4].text + gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[5].text 
