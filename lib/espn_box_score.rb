@@ -107,7 +107,7 @@ class EspnBoxScore
   def make_game_notes
     @game_notes = Hash.new
     
-    if @url.include? "nba"
+    if @url.include?("nba") || @url.include?("ncb")
       @game_notes[:away] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[0..2].text
       
       @game_notes[:home] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[3..5].text
@@ -150,7 +150,7 @@ class EspnBoxScore
   
   def top_performers
     string = ""
-    if @url.include? "nba"
+    if @url.include?("nba") || @url.include?("ncb")
       string << "#{game_notes[:away]}"
       string << "\n\n"
       string << "#{game_notes[:home]}"
@@ -171,7 +171,12 @@ class EspnBoxScore
 **#{away_team[:name]}** #{away_team[:score]} - **#{home_team[:name]}** #{home_team[:score]}
 
 #{quarters}
-#{quarters.size == 6 ? '----|-|-|-|-|-' : '----|-|-|-|-|-|-'}
+#{if @url.include? "ncb"
+    quarters.size == 4 ? '----|-|-|-' : '----|-|-|-|-'
+  else
+    quarters.size == 6 ? '----|-|-|-|-|-' : '----|-|-|-|-|-|-'
+  end
+}
 #{away_team_qbq}
 #{home_team_qbq}
 
@@ -185,7 +190,7 @@ class EspnBoxScore
     
 
 
-created by /u/swanpenguin
+[Generator](http://reddit-cfb-postgame.herokuapp.com/) created by /u/swanpenguin
 "
   end
   
