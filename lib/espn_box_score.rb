@@ -1,9 +1,10 @@
 require 'open-uri'
 require 'nokogiri'
+require 'uri'
 
 class EspnBoxScore
   
-  attr_reader :gamehq, :url, :away_team, :home_team, :scoreboard, :game_notes, :post, :title
+  attr_reader :gamehq, :url, :away_team, :home_team, :scoreboard, :game_notes, :post, :title, :encoded_url
   RANKED_REGEX = /\A\(\d+\)\z/
   
   def initialize(url)
@@ -16,6 +17,7 @@ class EspnBoxScore
     make_game_notes
     make_post
     make_title
+    make_encoded_url
   end
   
   def make_away_team
@@ -218,5 +220,22 @@ class EspnBoxScore
     else
       @away_team
     end
+  end
+  
+  def make_encoded_url
+    if @url.include?("ncf")
+      @encoded_url = "http://www.reddit.com/r/CFB/submit?selftext=true&title="
+    elsif @url.include?("nfl")
+      @encoded_url = "http://www.reddit.com/r/NFL/submit?selftext=true&title="
+    elsif @url.include?("nba")
+      @encoded_url = "http://www.reddit.com/r/NBA/submit?selftext=true&title="
+    elsif @url.include?("ncb")
+      @encoded_url = "http://www.reddit.com/r/CollegeBasketball/submit?selftext=true&title="
+    end
+    
+    
+    @encoded_url += URI.encode(@title.gsub("&", "%26"))
+    @encoded_url += "&text="
+    @encoded_url += URI.encode(@post.gsub("&", "%26"))
   end
 end
