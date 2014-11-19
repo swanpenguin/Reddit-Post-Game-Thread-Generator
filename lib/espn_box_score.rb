@@ -199,7 +199,9 @@ class EspnBoxScore
   def make_title
     @title = "[Post Game Thread] "
     @title += "#{winner[:name]} "
-    @title += "defeats "
+
+    @away_team[:score] == @home_team[:score] ? @title += "tie " : @title += "defeats "
+
     @title += "#{loser[:name]}, "
     @title += "#{winner[:score]}-#{loser[:score]}"
     
@@ -234,8 +236,8 @@ class EspnBoxScore
     end
     
     
-    @encoded_url += URI.encode(@title.gsub("&", "%26"))
+    @encoded_url += URI.encode(@title).gsub("&", "%26")
     @encoded_url += "&text="
-    @encoded_url += URI.encode(@post.gsub("&", "%26"))
+    @encoded_url += URI.encode(@post).gsub("&", "%26")
   end
 end
