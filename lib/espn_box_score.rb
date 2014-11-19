@@ -197,7 +197,7 @@ class EspnBoxScore
   end
   
   def make_title
-    @title = "[Post-Game Thread] "
+    @title = "[Post Game Thread] "
     @title += "#{winner[:name]} "
     @title += "defeats "
     @title += "#{loser[:name]}, "
