@@ -198,12 +198,12 @@ class EspnBoxScore
   
   def make_title
     @title = "[Post Game Thread] "
-    @title += "#{winner[:name]} "
-
-    @away_team[:score] == @home_team[:score] ? @title += "tie " : @title += "defeats "
-
-    @title += "#{loser[:name]}, "
-    @title += "#{winner[:score]}-#{loser[:score]}"
+    
+    if @away_team[:score] == @home_team[:score]
+      @title += "#{winner[:name]} and #{loser[:name]} tie, #{winner[:score]}-#{loser[:score]}"
+    else
+      @title += "#{winner[:name]} defeats #{loser[:name]}, #{winner[:score]}-#{loser[:score]}"
+    end
     
     @title
   end
