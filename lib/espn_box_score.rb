@@ -199,7 +199,7 @@ class EspnBoxScore
   def make_title
     @title = "[Post Game Thread] "
     
-    if @away_team[:score] == @home_team[:score]
+    if @away_team[:score].to_i == @home_team[:score].to_i
       @title += "#{winner[:name]} and #{loser[:name]} tie, #{winner[:score]}-#{loser[:score]}"
     else
       @title += "#{winner[:name]} defeats #{loser[:name]}, #{winner[:score]}-#{loser[:score]}"
@@ -209,7 +209,7 @@ class EspnBoxScore
   end
   
   def winner
-    if @away_team[:score] > @home_team[:score]
+    if @away_team[:score].to_i > @home_team[:score].to_i
       @away_team
     else
       @home_team
