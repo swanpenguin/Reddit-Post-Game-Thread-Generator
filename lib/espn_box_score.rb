@@ -109,7 +109,7 @@ class EspnBoxScore
   def make_game_notes
     @game_notes = Hash.new
     
-    if @url.include?("nba") || @url.include?("ncb")
+    if @url.include?("nba") || @url.include?("ncb") || @url.include?("ncw")
       @game_notes[:away] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[0..2].text
       
       @game_notes[:home] = gamehq.xpath("//div[@class='game-notes']//p[not(@class='heading')]").children[3..5].text
@@ -152,7 +152,7 @@ class EspnBoxScore
   
   def top_performers
     string = ""
-    if @url.include?("nba") || @url.include?("ncb")
+    if @url.include?("nba") || @url.include?("ncb") || @url.include?("ncw")
       string << "#{game_notes[:away]}"
       string << "\n\n"
       string << "#{game_notes[:home]}"
@@ -233,6 +233,8 @@ class EspnBoxScore
       @encoded_url = "http://www.reddit.com/r/NBA/submit?selftext=true&title="
     elsif @url.include?("ncb")
       @encoded_url = "http://www.reddit.com/r/CollegeBasketball/submit?selftext=true&title="
+    elsif @url.include?("ncw")
+      @encoded_url = "http://www.reddit.com/r/NCAAW/submit?selftext=true&title="
     end
     
     
