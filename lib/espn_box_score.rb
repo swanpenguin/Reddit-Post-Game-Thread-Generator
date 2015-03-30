@@ -188,9 +188,7 @@ class EspnBoxScore
 
 **Thoughts**
 
-*please substitute this for 2-4 thoughts you had during this game.*
-    
-
+ಠ_ಠ
 
 [Generator](http://reddit-cfb-postgame.herokuapp.com/) created by /u/swanpenguin
 "
@@ -202,7 +200,8 @@ class EspnBoxScore
     if @away_team[:score].to_i == @home_team[:score].to_i
       @title += "#{winner[:name]} and #{loser[:name]} tie, #{winner[:score]}-#{loser[:score]}"
     else
-      @title += "#{winner[:name]} defeats #{loser[:name]}, #{winner[:score]}-#{loser[:score]}"
+      winner_plural = winner[:name].pluralize == winner[:name] 
+      @title += "#{winner[:name]} #{winner_plural ? 'defeat' : 'defeats'} #{loser[:name]}, #{winner[:score]}-#{loser[:score]}"
     end
     
     @title

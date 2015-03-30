@@ -10,11 +10,6 @@ class ResultController < ApplicationController
     @title = @box_score.title
     @encoded_url = @box_score.encoded_url
     
-    # render status: 200,
-#            json: { post: @post,
-#                    title: @title,
-#                    encoded_url: @encoded_url }
-
     redirect_to @encoded_url 
   end
 end
