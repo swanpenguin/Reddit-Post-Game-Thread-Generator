@@ -4,11 +4,12 @@ require 'uri'
 
 class EspnBoxScore
   
-  attr_reader :gamehq, :url, :away_team, :home_team, :scoreboard, :game_notes, :post, :title, :encoded_url
+  attr_reader :gamehq, :url, :subreddit, :away_team, :home_team, :scoreboard, :game_notes, :post, :title, :encoded_url
   RANKED_REGEX = /\A\(\d+\)\z/
   
-  def initialize(url)
+  def initialize(url, subreddit)
     @url = url
+    @subreddit = subreddit.start_with?("/r/") ? subreddit[3..-1] : subreddit
     page = Nokogiri::HTML(open(url))
     @gamehq = page.xpath("//div[@class='gamehq-wrapper']")
     make_away_team
@@ -224,7 +225,9 @@ class EspnBoxScore
   end
   
   def make_encoded_url
-    if @url.include?("ncf")
+    if !@subreddit.nil? && !@subreddit.empty?
+      @encoded_url = "http://www.reddit.com/r/#{@subreddit}/submit?selftext=true&title="
+    elsif @url.include?("ncf")
       @encoded_url = "http://www.reddit.com/r/CFB/submit?selftext=true&title="
     elsif @url.include?("nfl")
       @encoded_url = "http://www.reddit.com/r/NFL/submit?selftext=true&title="
