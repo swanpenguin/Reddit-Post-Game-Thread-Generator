@@ -190,6 +190,7 @@ class EspnBoxScore
 **Thoughts**
 
 ಠ_ಠ
+┗(｀Дﾟ┗(｀ﾟДﾟ´)┛ﾟД´)┛
 
 [Generator](http://reddit-cfb-postgame.herokuapp.com/) created by /u/swanpenguin
 "
