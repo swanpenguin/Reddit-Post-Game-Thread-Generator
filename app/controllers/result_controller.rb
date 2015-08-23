@@ -5,11 +5,8 @@ class ResultController < ApplicationController
   end
   
   def generate
-    @box_score = EspnBoxScore.new(params[:url], params[:subreddit].strip)
-    @post = @box_score.post
-    @title = @box_score.title
-    @encoded_url = @box_score.encoded_url
+    box_score = EspnBoxScore.new(params[:url], params[:subreddit].strip)
     
-    redirect_to @encoded_url 
+    redirect_to box_score.encoded_url 
   end
 end
