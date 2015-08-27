@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-12">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1>Reddit CFB Postgame Generator</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <h4>Note the placeholder. The format should match it.</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <%= form_for(:game, url: result_generate_path, method: :get) do |f| %>
+            <div class="form-group">
+              <%= f.label :espn_url, "ESPN URL" %>
+              <%= f.text_field :espn_url, class: "form-control", placeholder: "http://scores.espn.go.com/ncf/boxscore?gameId=400548402" %>
+            </div>
+            <div class="form-group">
+              <%= f.label :subreddit, "Subreddit" %>
+              <%= f.text_field :subreddit, class: "form-control", placeholder: "THIS IS OPTIONAL" %>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="pull-right">
+                  <%= f.submit "Generate Reddit Post", class: "btn btn-large btn-primary" %>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="pull-right">
+                  <a href="http://www.reddit.com/message/compose/?to=swanpenguin&subject=୧༼ ヘ ᗜ ヘ ༽୨">Contact the creator</a>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <%#<script>%>
+  <%#$('.get_results').click(function () {%>
+    <%#window.location='/result/generate?url=' + $('.espn_url').val() + '&subreddit=' + $('.subreddit_name').val();%>
+  <%#})%>
+  <%#</script>%>
+</div>

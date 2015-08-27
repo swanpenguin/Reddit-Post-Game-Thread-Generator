@@ -1,11 +1,11 @@
 require 'espn_box_score'
 
 class ResultController < ApplicationController
-  def root
+  def home
   end
   
   def generate
-    box_score = EspnBoxScore.new(params[:url], params[:subreddit].strip)
+    box_score = EspnBoxScore.new(params[:game][:espn_url], params[:game][:subreddit].strip)
     
     redirect_to box_score.encoded_url 
   end
