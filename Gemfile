@@ -5,6 +5,7 @@ gem 'rails', '4.2.3'
 
 gem 'nokogiri' # Used for scraping ESPN
 
+gem "twitter-bootstrap-rails"
 # Use sqlite3 as the database for Active Record
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'sass-rails', '~> 5.0' # Use SCSS for stylesheets
