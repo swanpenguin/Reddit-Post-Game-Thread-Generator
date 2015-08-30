@@ -5,7 +5,7 @@ class ResultController < ApplicationController
   end
   
   def generate
-    box_score = EspnBoxScore.new(params[:game][:espn_url], params[:game][:subreddit].strip)
+    box_score = EspnBoxScore::make_box_score(params[:game][:espn_url], params[:game][:subreddit].strip)
     
     redirect_to box_score.encoded_url 
   end
