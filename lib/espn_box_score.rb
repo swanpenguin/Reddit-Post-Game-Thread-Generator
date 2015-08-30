@@ -4,7 +4,17 @@ require 'uri'
 
 class EspnBoxScore
   
-  attr_reader :gamehq, :url, :subreddit, :away_team, :home_team, :scoreboard, :game_notes, :post, :title, :encoded_url
+  attr_accessor :gamehq, 
+                :url, 
+                :subreddit, 
+                :away_team, 
+                :home_team, 
+                :scoreboard, 
+                :game_notes, 
+                :post, 
+                :title, 
+                :encoded_url
+
   RANKED_REGEX = /\A\(\d+\)\z/
   
   def initialize(url, subreddit)
@@ -12,65 +22,36 @@ class EspnBoxScore
     @subreddit = subreddit.start_with?("/r/") ? subreddit[3..-1] : subreddit
     page = Nokogiri::HTML(open(url))
     @gamehq = page.xpath("//div[@class='gamehq-wrapper']")
-    make_away_team
-    make_home_team
+    self.away_team = {}
+    self.home_team = {}
+    make_team(:away, self.away_team)
+    make_team(:home, self.home_team)
     make_scoreboard
     make_game_notes
     make_post
     make_title
     make_encoded_url
   end
-  
-  def make_away_team
-    @away_team = Hash.new
-    @away_team[:ranked] = true if RANKED_REGEX.match(@gamehq.xpath("//div[@class='team-info']").first.
-                        children.children[0].text)
-                        
-    if @away_team[:ranked]
-      @away_team[:name] = @gamehq.xpath("//div[@class='team-info']").first.
-                        children.children[0..2].text
-                      
-      @away_team[:score] = @gamehq.xpath("//div[@class='team-info']").first.
-                         children.children[4].text
-                      
-      @away_team[:record] = @gamehq.xpath("//div[@class='team-info']").first.
-                          children.children[5].text
-    else
-      @away_team[:name] = @gamehq.xpath("//div[@class='team-info']").first.
-                        children.children[0].text
-                      
-      @away_team[:score] = @gamehq.xpath("//div[@class='team-info']").first.
-                         children.children[2].text
-                      
-      @away_team[:record] = @gamehq.xpath("//div[@class='team-info']").first.
-                          children.children[3].text
-    end
 
+  def get_game_text(team_index, index)
+    @gamehq.xpath("//div[@class='team-info']")[team_index].children.children[index].text
   end
   
-  def make_home_team
-    @home_team = Hash.new
-    @home_team[:ranked] = true if RANKED_REGEX.match(@gamehq.xpath("//div[@class='team-info']").last.
-                        children.children[0].text)
+  def make_team(type, team)
+    index = type == :home ? 1 : 0
+
+    if RANKED_REGEX.match(get_game_text(index, 0))
+      team[:ranked] = true 
+    end
                         
-    if @home_team[:ranked]
-      @home_team[:name] = @gamehq.xpath("//div[@class='team-info']").last.
-                        children.children[0..2].text
-                      
-      @home_team[:score] = @gamehq.xpath("//div[@class='team-info']").last.
-                         children.children[4].text
-                      
-      @home_team[:record] = @gamehq.xpath("//div[@class='team-info']").last.
-                          children.children[5].text
+    if team[:ranked]
+      team[:name] = get_game_text(index, 0..2)
+      team[:score] = get_game_text(index, 4)
+      team[:record] = get_game_text(index, 5)
     else
-      @home_team[:name] = @gamehq.xpath("//div[@class='team-info']").last.
-                        children.children[0].text
-                      
-      @home_team[:score] = @gamehq.xpath("//div[@class='team-info']").last.
-                         children.children[2].text
-                      
-      @home_team[:record] = @gamehq.xpath("//div[@class='team-info']").last.
-                          children.children[3].text
+      team[:name] = get_game_text(index, 0)
+      team[:score] = get_game_text(index, 2)
+      team[:record] = get_game_text(index, 3)
     end
   end
   
@@ -86,7 +67,7 @@ class EspnBoxScore
     #scores2 -> normals
     #scores3 -> take both then shift then placed
     #scores4 -> take, then shift home.
-    
+   
     if @away_team[:ranked] && @home_team[:ranked]
       @scoreboard[:away] = scores.take(scores.size/2)
       @scoreboard[:away].shift
