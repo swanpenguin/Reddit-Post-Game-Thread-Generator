@@ -149,7 +149,12 @@ class EspnBoxScore
 **Thoughts**
 
 ಠ_ಠ
-┗(｀Дﾟ┗(｀ﾟДﾟ´)┛ﾟД´)┛
+
+#{if loser[:name] == "Texsa"
+    "ERRRBODDDDDDY"
+  else
+    "┗(｀Дﾟ┗(｀ﾟДﾟ´)┛ﾟД´)┛"
+  end}
 
 [Generator](http://reddit-cfb-postgame.herokuapp.com/) created by /u/swanpenguin
 "
